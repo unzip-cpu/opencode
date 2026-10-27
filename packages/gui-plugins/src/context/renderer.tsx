@@ -28,11 +28,12 @@ const setup: Plugin.Setup<typeof definition> = (ctx) => {
     ),
   }
 
-  ctx.add(Slot, {
-    at: "session.header",
-    order: 10,
-    render: (input) => <SessionContextUsage session={input.session} placement="bottom" />,
-  })
+  // ghz:隐藏右上角的上下文按钮
+  // ctx.add(Slot, {
+  //   at: "session.header",
+  //   order: 10,
+  //   render: (input) => <SessionContextUsage session={input.session} placement="bottom" />,
+  // })
 
   ctx.add(
     BuiltinPanel,

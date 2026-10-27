@@ -29,13 +29,14 @@ const setup: Plugin.Setup<typeof Details> = (ctx) => {
     }),
   )
 
-  ctx.add(Slot, {
-    at: "session.header",
-    order: 20,
-    render: (input) => (
-      <DetailsHeader menus={menus} session={input.session} active={input.active} panel={DetailsPanel} />
-    ),
-  })
+  // ghz:隐藏右上角的审查按钮
+  // ctx.add(Slot, {
+  //   at: "session.header",
+  //   order: 20,
+  //   render: (input) => (
+  //     <DetailsHeader menus={menus} session={input.session} active={input.active} panel={DetailsPanel} />
+  //   ),
+  // })
 
   ctx.add(Slot, {
     at: "session.location.menu",
