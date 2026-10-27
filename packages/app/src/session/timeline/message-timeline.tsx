@@ -626,54 +626,55 @@ function MessageTimelineView(
                   />
                 </Show>
               </Show>
-              <Show when={!parentID() && sessionID()} keyed>
-                {(id) => (
-                  <Menu
-                    gutter={6}
-                    placement="bottom-start"
-                    open={title.menuOpen}
-                    onOpenChange={(open) => setTitle("menuOpen", open)}
-                  >
-                    <Menu.Trigger
-                      as={IconButton}
-                      icon={<Icon name="outline-dots" />}
-                      variant="ghost-muted"
-                      size="large"
-                      class="shrink-0"
-                      aria-label={language.t("common.moreOptions")}
-                      aria-expanded={title.menuOpen}
-                    />
-                    <Menu.Portal>
-                      <Menu.Content
-                        class="session-options-menu w-max"
-                        style={{ "min-width": "0" }}
-                        onCloseAutoFocus={(event) => {
-                          if (!title.pendingRename) return
-                          event.preventDefault()
-                          setTitle("pendingRename", false)
-                          openTitleEditor()
-                        }}
-                      >
-                        <Menu.Item
-                          onSelect={() => {
-                            setTitle("pendingRename", true)
-                            setTitle("menuOpen", false)
-                          }}
-                        >
-                          {language.t("common.rename")}
-                        </Menu.Item>
-                        <Menu.Item onSelect={() => void props.action.export(id)}>
-                          {language.t("common.export")}…
-                        </Menu.Item>
-                        <Menu.Separator />
-                        <Menu.Item onSelect={() => props.action.showDelete(id)}>
-                          {language.t("common.delete")}…
-                        </Menu.Item>
-                      </Menu.Content>
-                    </Menu.Portal>
-                  </Menu>
-                )}
-              </Show>
+              {/*ghz:隐藏左上角的三个省略号【更多选项】*/}
+              {/*<Show when={!parentID() && sessionID()} keyed>*/}
+              {/*  {(id) => (*/}
+              {/*    <Menu*/}
+              {/*      gutter={6}*/}
+              {/*      placement="bottom-start"*/}
+              {/*      open={title.menuOpen}*/}
+              {/*      onOpenChange={(open) => setTitle("menuOpen", open)}*/}
+              {/*    >*/}
+              {/*      <Menu.Trigger*/}
+              {/*        as={IconButton}*/}
+              {/*        icon={<Icon name="outline-dots" />}*/}
+              {/*        variant="ghost-muted"*/}
+              {/*        size="large"*/}
+              {/*        class="shrink-0"*/}
+              {/*        aria-label={language.t("common.moreOptions")}*/}
+              {/*        aria-expanded={title.menuOpen}*/}
+              {/*      />*/}
+              {/*      <Menu.Portal>*/}
+              {/*        <Menu.Content*/}
+              {/*          class="session-options-menu w-max"*/}
+              {/*          style={{ "min-width": "0" }}*/}
+              {/*          onCloseAutoFocus={(event) => {*/}
+              {/*            if (!title.pendingRename) return*/}
+              {/*            event.preventDefault()*/}
+              {/*            setTitle("pendingRename", false)*/}
+              {/*            openTitleEditor()*/}
+              {/*          }}*/}
+              {/*        >*/}
+              {/*          <Menu.Item*/}
+              {/*            onSelect={() => {*/}
+              {/*              setTitle("pendingRename", true)*/}
+              {/*              setTitle("menuOpen", false)*/}
+              {/*            }}*/}
+              {/*          >*/}
+              {/*            {language.t("common.rename")}*/}
+              {/*          </Menu.Item>*/}
+              {/*          <Menu.Item onSelect={() => void props.action.export(id)}>*/}
+              {/*            {language.t("common.export")}…*/}
+              {/*          </Menu.Item>*/}
+              {/*          <Menu.Separator />*/}
+              {/*          <Menu.Item onSelect={() => props.action.showDelete(id)}>*/}
+              {/*            {language.t("common.delete")}…*/}
+              {/*          </Menu.Item>*/}
+              {/*        </Menu.Content>*/}
+              {/*      </Menu.Portal>*/}
+              {/*    </Menu>*/}
+              {/*  )}*/}
+              {/*</Show>*/}
               <Show when={!title.editing}>
                 <SessionHeaderGap active={props.active !== false} register={props.registerHeaderGap} />
               </Show>
