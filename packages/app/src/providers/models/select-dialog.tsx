@@ -868,7 +868,8 @@ export function DialogSelectModel(props: { provider?: string; model?: ModelState
                     onClick={() => setSearch("")}
                   />
                 </Show>
-                <Tooltip
+                {/*ghz:去掉input输入框的添加模型供应商和管理模型2个按钮*/}
+                {/*<Tooltip
                   placement="top"
                   gutter={4}
                   value={language.t("command.provider.connect")}
@@ -890,7 +891,7 @@ export function DialogSelectModel(props: { provider?: string; model?: ModelState
                     onPointerDown={(event: PointerEvent) => event.preventDefault()}
                     onClick={manage}
                   />
-                </Tooltip>
+                </Tooltip>*/}
               </>
             }
             items={rows()}
@@ -923,16 +924,17 @@ export function DialogSelectModel(props: { provider?: string; model?: ModelState
         <Show when={chatgptPlan()}>
           <ChatgptPlanFooter />
         </Show>
-        <div data-slot="model-dialog-hints">
-          <span>
-            <Keybind keys={["←", "→"]} variant="neutral" />
-            {language.t("dialog.model.hint.variant")}
-          </span>
-          <span>
-            <Keybind keys={formatKeybindParts("mod+f", language.t)} variant="neutral" />
-            {language.t("dialog.model.hint.favorite")}
-          </span>
-        </div>
+        {/*ghz:去掉无用的注释*/}
+        {/*<div data-slot="model-dialog-hints">*/}
+        {/*  <span>*/}
+        {/*    <Keybind keys={["←", "→"]} variant="neutral" />*/}
+        {/*    {language.t("dialog.model.hint.variant")}*/}
+        {/*  </span>*/}
+        {/*  <span>*/}
+        {/*    <Keybind keys={formatKeybindParts("mod+f", language.t)} variant="neutral" />*/}
+        {/*    {language.t("dialog.model.hint.favorite")}*/}
+        {/*  </span>*/}
+        {/*</div>*/}
       </DialogBody>
       <Show when={flyoutItem()}>
         {(item) => (
