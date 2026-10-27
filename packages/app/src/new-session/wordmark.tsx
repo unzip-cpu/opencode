@@ -131,25 +131,7 @@ export function NewSessionWordmark(props: {
       aria-hidden="true"
       class="pointer-events-none mx-auto w-full max-w-[720px] text-v2-background-bg-inverse"
     >
-      <div
-        ref={(el) => {
-          box = el
-          props.ref(el)
-        }}
-        data-slot="wordmark-box"
-        class="relative mx-auto aspect-[234/42] w-4/5"
-      >
-        <Show when={lodger}>
-          <WordmarkLodger
-            box={box}
-            sound={props.sound ?? (() => false)}
-            onOpen={() => props.onOpen?.()}
-            onClose={() => props.onClose?.()}
-            onFlat={() => props.onFlat?.()}
-            onPlay={props.onPlay}
-          />
-        </Show>
-      </div>
+      <p className="text-center text-[35px] leading-[1.15] font-medium tracking-tight text-balance text-v2-background-bg-inverse">由 AI 驱动的Web应用构建智能体</p>
     </div>
   )
 }
