@@ -50,8 +50,9 @@ export function preloadRoute(url: string) {
 export function AppRoutes() {
   return (
     <Route component={AppLayout}>
-      <Route path="/" component={Home} />
-      <Route path="/settings" component={SettingsScreen} />
+      {/*ghz:去掉一些不必要的路由，避免用户直接通过ip:port访问*/}
+      {/*<Route path="/" component={Home} />*/}
+      {/*<Route path="/settings" component={SettingsScreen} />*/}
       <Route
         path="/server/:serverKey/session/:id"
         component={() => (
