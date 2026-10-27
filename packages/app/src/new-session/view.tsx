@@ -107,7 +107,8 @@ export function NewSessionView(props: {
                 <div class="relative z-10">
                   <Composer model={props.composer} />
                 </div>
-                <Show when={props.project.selected()}>
+                {/*ghz:去掉input底部的工作目录选择框*/}
+                {/*<Show when={props.project.selected()}>
                   {(project) => (
                     <NewSessionLocation
                       project={project()}
@@ -124,7 +125,7 @@ export function NewSessionView(props: {
                       }
                     />
                   )}
-                </Show>
+                </Show>*/}
               </div>
               <Show when={props.project.empty()}>
                 <PromptProjectAddButton controller={props.project} />
