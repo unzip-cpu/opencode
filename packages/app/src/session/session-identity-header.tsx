@@ -74,7 +74,8 @@ export function SessionHeaderLayout(
   return (
     <SessionHeaderCollapse.Provider value={() => fit.collapse}>
       <div ref={fit.ref} class="session-header-layout" data-location-collapse={fit.collapse}>
-        <div class="session-header-location">{props.location}</div>
+        {/*ghz:隐藏左上角的工作目录切换功能*/}
+        {/*<div class="session-header-location">{props.location}</div>*/}
         <div class="session-header-title">
           <span class="session-header-title-measure" aria-hidden="true">
             <span>{props.title}</span>
