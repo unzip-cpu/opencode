@@ -132,7 +132,8 @@ function inputChanged(
     ])
   }
 
-  const command = value.match(/^\/(\S*)$/)
+  // ghz:隐藏/斜杠换起命令
+/*  const command = value.match(/^\/(\S*)$/)
 
   if (command) {
     const query = command[1] ?? ""
@@ -141,7 +142,7 @@ function inputChanged(
       ...setText,
       { type: "popover.filter", popover: "command", query },
     ])
-  }
+  }*/
 
   return changed(
     { ...state, popover: state.popover.type === "command-menu" ? state.popover : { type: "closed" }, focus: "editor" },
