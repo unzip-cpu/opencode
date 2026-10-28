@@ -487,7 +487,8 @@ export function CurrentUserMessageDisplay(props: {
           />
         </UserMessageTransition>
       </Show>
-      <Show when={props.actions?.fork}>
+      {/*ghz:隐藏fork从此消息创建新会话*/}
+      {/*<Show when={props.actions?.fork}>
         <UserMessageTransition active={!pending()}>
           <MessageActionButton
             icon="fork"
@@ -502,7 +503,7 @@ export function CurrentUserMessageDisplay(props: {
             aria-label={i18n.t("ui.message.forkMessage")}
           />
         </UserMessageTransition>
-      </Show>
+      </Show>*/}
       {/* Like the iOS app, a Voice message's copy also offers the full prompt the session received, on right click. */}
       <Show
         when={props.voice}
