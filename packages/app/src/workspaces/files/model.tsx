@@ -59,7 +59,16 @@ export const { use: useFile, provider: FileProvider } = createSimpleContext({
       normalizeDir: path.normalizeDir,
       list: (dir) =>
         serverSDK.api.file.list({ path: dir, location: { directory: scope() } }).then((x) =>
-          x.data.map((entry) => ({
+          x.data
+            .filter((entry) => {
+              // ghz:将AGENTS.md、opencode.json(c)、api目录等文件进行隐藏，不在前端显示
+              const name = getFilename(entry.path)
+              // Exclude project-level config files and the api directory from the sidebar tree
+              if (entry.type === "file" && (name === "opencode.json" || name === "opencode.jsonc" || name === "AGENTS.md")) return false
+              if (entry.type === "directory" && name === "api") return false
+              return true
+            })
+            .map((entry) => ({
             ...entry,
             name: getFilename(entry.path),
             absolute: `${scope()}/${entry.path}`,
