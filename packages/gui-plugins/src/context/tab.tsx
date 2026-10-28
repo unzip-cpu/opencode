@@ -296,7 +296,7 @@ export default function SessionContextTab(props: { session: MountedSession }) {
           <For each={stats}>{(stat) => <Stat label={ctx.t(stat.label)} value={stat.value()} />}</For>
         </div>
 
-        <Show when={systemPrompt()}>
+        {/*<Show when={systemPrompt()}>
           {(prompt) => (
             <div class="flex flex-col gap-2">
               <div class="text-12-regular text-text-weak">{ctx.t("systemPrompt.title")}</div>
@@ -305,7 +305,7 @@ export default function SessionContextTab(props: { session: MountedSession }) {
               </div>
             </div>
           )}
-        </Show>
+        </Show>*/}
 
         {/*<div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
