@@ -196,7 +196,7 @@ export default function SessionContextTab(props: { session: MountedSession }) {
     },
     { label: "stats.userMessages", value: () => counts().user.toLocaleString(i18n.locale()) },
     { label: "stats.assistantMessages", value: () => counts().assistant.toLocaleString(i18n.locale()) },
-    { label: "stats.totalCost", value: cost },
+    // { label: "stats.totalCost", value: cost },
     { label: "stats.sessionCreated", value: () => formatter().time(info()?.time.created) },
     { label: "stats.lastActivity", value: () => formatter().time(context()?.message.time.created) },
   ] satisfies { label: string; value: () => JSX.Element }[]
@@ -307,7 +307,7 @@ export default function SessionContextTab(props: { session: MountedSession }) {
           )}
         </Show>
 
-        <div class="flex flex-col gap-2">
+        {/*<div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="text-12-regular text-text-weak">{ctx.t("rawMessages.title")}</div>
             <Button
@@ -325,7 +325,7 @@ export default function SessionContextTab(props: { session: MountedSession }) {
               {(message) => <RawMessage message={message} onRendered={restoreScroll} time={formatter().time} />}
             </For>
           </Accordion>
-        </div>
+        </div>*/}
       </div>
     </div>
   )
