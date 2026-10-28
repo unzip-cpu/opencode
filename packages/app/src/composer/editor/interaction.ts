@@ -210,12 +210,9 @@ export function createComposerEditor(input: {
       // Only session titles contain spaces; fuzzy matches elsewhere would keep the popover over prose.
       if (/\s/.test(query)) return sessions
 
-      const fixed = input.context().filter((item) => item.kind !== "file")
-      const recent = input.context().filter((item) => item.kind === "file" && item.recent)
-
-      const seen = new Set(recent.map((item) => item.id))
-
-      return [...fixed, ...sessions, ...recent, ...found.files.filter((item) => !seen.has(item.id))]
+      //ghz:@唤起命令只保留skills
+      const skills = input.context().filter((item) => item.kind === "skill" && item.id !== "skill:opencode")
+      return skills
     },
     key: (item) => item.id,
     filterKeys: ["label"],
