@@ -16,8 +16,8 @@ const setup: Plugin.Setup<typeof definition> = (ctx) => {
     get title() {
       return ctx.t("tab.title")
     },
-    draggable: false,
-    closable: "compact",
+    // ghz:打开侧边栏模型显示上下文
+    pinned: true,
     first: true,
     fallback: true,
     label: (state) => (
@@ -43,7 +43,8 @@ const setup: Plugin.Setup<typeof definition> = (ctx) => {
       // Stored before plugins as "context".
       legacy: { context: "main" },
       mobile: { title: ctx.t("mobile.title"), order: 40, kind: "menu", icon: "status" },
-      list: (input) => (input.open.includes("main") ? [tab] : []),
+      // ghz:打开侧边栏模型显示上下文
+      list: () => [tab],
       closed: () => ({ icon: "status" }),
       render: (props) => {
         const panel = usePanel()
