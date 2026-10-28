@@ -62,6 +62,13 @@ export function createComposerModel(adapter: ComposerAdapter, options?: { queue?
   const platform = usePlatform()
   const serverSDK = useServerSDK()
   const prompt = adapter.state
+  // Editor actions write the captured store directly, rather than going through the context methods.
+  createEffect(
+    on(
+      () => prompt.context.items(),
+      (items) => prompt.quoteSource.retain(items.map((item) => item.key)),
+    ),
+  )
   let editor: HTMLDivElement | undefined
   // A path attachment's image is read through the server, which can see both local and uploaded paths.
   const pathImages = new Map<string, Promise<string | undefined>>()
@@ -340,7 +347,10 @@ export function createComposerModel(adapter: ComposerAdapter, options?: { queue?
 
       if (!selected) return
 
-      return () => command.trigger(selected.id, "slash", selected.input)
+      // A command declines only keys, so a slash command's `false` means nothing more.
+      return async () => {
+        await command.trigger(selected.id, "slash", selected.input)
+      }
     },
   })
 
@@ -413,6 +423,7 @@ export function createComposerModel(adapter: ComposerAdapter, options?: { queue?
       })),
     onQuoteComment: (item, comment) => prompt.context.updateComment(item.commentID, { comment }),
     quoteComment: prompt.quoteComment,
+    quoteSource: prompt.quoteSource,
     onContextRemove(item) {
       if (item.type === "file" && item.commentID) comments.remove(item.path, item.commentID)
     },
@@ -551,15 +562,6 @@ export function createComposerModel(adapter: ComposerAdapter, options?: { queue?
   Object.defineProperty(controller, "model", { get: () => adapter.controls().model })
 
   command.register("composer-editor", () => [
-    {
-      id: "prompt.history.search",
-      title: language.t("ui.promptInput.history.search"),
-      keybind: "mod+f",
-      hidden: true,
-      editable: true,
-      when: () => controller.state.popover.type === "history",
-      onSelect: () => void controller.dispatch({ type: "history.search" }),
-    },
     {
       id: "file.attach",
       title: language.t("prompt.action.attachFile"),

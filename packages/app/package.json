@@ -1,6 +1,6 @@
 {
   "name": "@opencode/app",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "",
   "type": "module",
   "exports": {
@@ -78,7 +78,6 @@
     "@solid-primitives/keyed": "1.5.3",
     "@solid-primitives/media": "catalog:",
     "@solid-primitives/resize-observer": "catalog:",
-    "@solid-primitives/scheduled": "1.5.3",
     "@solid-primitives/storage": "catalog:",
     "@solidjs/meta": "catalog:",
     "@solidjs/router": "catalog:",

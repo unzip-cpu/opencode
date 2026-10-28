@@ -104,6 +104,8 @@ export type CommandSection = typeof CommandSection.Type
 
 export interface CommandOption {
   id: string
+  /** The GUI plugin that contributes the command. Settings > Shortcuts lists it only while that plugin is installed. */
+  plugin?: string
   title: string
   description?: string
   /** Extra words the command palette matches, separated by spaces. */
@@ -128,7 +130,8 @@ export interface CommandOption {
   when?: (event: KeyboardEvent) => boolean
   /** The keybind leaves this event to its target, as if the command had no keybind. */
   skip?: (event: KeyboardEvent) => boolean
-  onSelect?: (source?: "palette" | "keybind" | "slash", input?: string) => void | Promise<void>
+  /** From a keybind, returning false declines the key: the event goes on to its target. */
+  onSelect?: (source?: "palette" | "keybind" | "slash", input?: string) => void | false | Promise<void>
   onHighlight?: () => (() => void) | void
 }
 
@@ -173,6 +176,7 @@ export function resolveKeybindOption(candidates: CommandOption[] | undefined, ev
 export type CommandSource = "palette" | "keybind" | "slash"
 
 const CommandCatalogItem = Persistence.struct({
+  plugin: Schema.optional(Schema.String),
   title: Schema.String,
   description: Schema.optional(Schema.String),
   category: Schema.optional(Schema.String),
@@ -426,6 +430,7 @@ export const { use: useCommand, provider: CommandProvider } = createSimpleContex
           setCatalog(
             actionId(opt.id),
             reconcile({
+              plugin: opt.plugin,
               title: opt.title,
               description: opt.description,
               category: opt.category,
@@ -520,9 +525,14 @@ export const { use: useCommand, provider: CommandProvider } = createSimpleContex
       }
 
       if (!option) return
+
+      // A command that returns false declines the key, which goes on to its target.
+      const result = option.onSelect?.("keybind")
+
+      if (result === false) return
       event.preventDefault()
       event.stopPropagation()
-      void option.onSelect?.("keybind")
+      void result
     }
 
     onMount(() => {
