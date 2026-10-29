@@ -195,6 +195,8 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
 
     const defaultModel = () => {
       for (const provider of providers.connected()) {
+        // ghz:opencode提供的模型不允许被默认选中
+        if (provider.id === "opencode") continue
         const first = Object.values(provider.models)[0]
 
         if (!first) continue
