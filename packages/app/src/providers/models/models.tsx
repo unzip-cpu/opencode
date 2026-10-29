@@ -115,17 +115,7 @@ const createModelsController = (directory: Accessor<string | undefined>) => {
   }
 
   const visible = (model: ModelKey) => {
-    const key = modelKey(model)
-    const state = visibility().get(key)
-
-    if (state === "hide") return false
-
-    if (state === "show") return true
-
-    if (latestSet().has(key)) return true
-
-    // Models without a parseable release date stay visible.
-    return !Number.isFinite(release().get(key) ?? NaN)
+    return true
   }
 
   const setVisibility = (model: ModelKey, state: boolean) => {
