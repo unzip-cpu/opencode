@@ -333,7 +333,6 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
       data-tauri-drag-region
     >
       <div class="w-full max-w-3xl flex flex-col items-center justify-center gap-6 sm:gap-8 my-auto">
-        <Logo class="w-48 sm:w-58.5 opacity-12 shrink-0" />
         <div class="flex flex-col items-center gap-2 text-center">
           <h1 class="text-lg font-medium text-text-strong">
             {language.t(status() ? "error.page.title.status" : "error.page.title")}
@@ -408,17 +407,6 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
           {(message) => <p class="text-xs text-text-danger-base text-center max-w-2xl">{message()}</p>}
         </Show>
         <div class="flex flex-col items-center gap-2 text-xs text-center">
-          <div class="flex flex-wrap items-center justify-center gap-1">
-            {language.t("error.page.report.prefix")}
-            <button
-              type="button"
-              class="flex items-center text-text-interactive-base gap-1"
-              onClick={() => platform.openExternal("https://opencode.ai/desktop-feedback")}
-            >
-              <div>{language.t("error.page.report.discord")}</div>
-              <Icon name="discord" class="text-text-interactive-base" />
-            </button>
-          </div>
           <Show when={platform.version}>
             {(version) => (
               <p class="text-xs text-text-weak">{language.t("error.page.version", { version: version() })}</p>
