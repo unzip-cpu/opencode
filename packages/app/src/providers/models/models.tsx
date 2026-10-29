@@ -115,7 +115,8 @@ const createModelsController = (directory: Accessor<string | undefined>) => {
   }
 
   const visible = (model: ModelKey) => {
-    return true
+    // ghz:隐藏opencode提供的免费模型，而其他的模型全部设置为可见
+    return model.providerID === "opencode" ? false : true
   }
 
   const setVisibility = (model: ModelKey, state: boolean) => {
