@@ -1,9 +1,11 @@
-import { Route, useParams } from "@solidjs/router"
-import { createMemo, lazy, Show, Suspense, type ParentProps } from "solid-js"
+import { Route, useNavigate, useParams, useSearchParams } from "@solidjs/router"
+import { createEffect, createMemo, lazy, type ParentProps, Show, Suspense } from "solid-js"
+import { Loader } from "@opencode/ui/loader"
 import { Home } from "@/home/route"
 import { ServerProvider } from "@/runtime/server/current"
 import { useGlobal } from "@/runtime/server/runtime"
 import { ServerConnection, useServers } from "@/runtime/server/registry"
+import { type DraftTab, useTabs } from "@/shell/tabs/tabs"
 import { SessionPanelFrame, SessionRouteFrame } from "@/session/session-frame"
 import { LayoutProvider } from "@/shell/state/layout"
 import { SettingsSurfaceProvider } from "@/settings/surface"
@@ -37,7 +39,7 @@ const TargetSessionRouteContent = lazy(() =>
 export function preloadRoute(url: string) {
   const pathname = url.split(/[?#]/, 1)[0]
 
-  if (pathname === "/new-session") return DraftRoute.preload().then(() => undefined)
+  if (pathname === "/new-session" || pathname === "/new") return DraftRoute.preload().then(() => undefined)
 
   if (pathname === "/settings") return SettingsScreen.preload().then(() => undefined)
 
@@ -72,6 +74,7 @@ export function AppRoutes() {
         )}
       />
       <Route path="/new-session" component={DraftRoute} />
+      <Route path="/new" component={NewSessionRedirect} />
       {ComponentsLab && <Route path="/components" component={ComponentsLab} />}
     </Route>
   )
@@ -115,5 +118,51 @@ function AppLayout(props: ParentProps) {
         </SettingsSurfaceProvider>
       </LayoutProvider>
     </Show>
+  )
+}
+
+/**
+ * URL entry point for opening the new-session page directly.
+ *
+ * Visiting `/new?directory=<path>` (with `auth_token` in the query string handled by entry.tsx) creates a draft
+ * for the first connected server and opens the prompt composer. The directory is required: without it there is
+ * nowhere to place the session.
+ */
+function NewSessionRedirect() {
+  const [search] = useSearchParams<{ directory?: string }>()
+  const navigate = useNavigate()
+  const tabs = useTabs()
+  const servers = useServers()
+
+  createEffect(() => {
+    const directory = search.directory
+    if (!directory) {
+      navigate("/")
+      return
+    }
+
+    // Reuse an existing draft for this directory if one already exists.
+    const existing = () =>
+      tabs.store.find((tab) => tab.type === "draft" && tab.directory === directory) as DraftTab | undefined
+    if (existing()) {
+      navigate(`/new-session?draftId=${encodeURIComponent(existing()!.draftID)}`)
+      return
+    }
+
+    const list = servers.list
+    if (!list.length) return
+
+    const first = list[0]
+    const key = ServerConnection.key(first)
+    const draft = tabs.newDraft({ server: key, directory })
+    void draft.then((tab) => {
+      navigate(`/new-session?draftId=${encodeURIComponent(tab.draftID)}`)
+    })
+  })
+
+  return (
+    <div class="flex min-h-0 flex-1 items-center justify-center">
+      <Loader />
+    </div>
   )
 }

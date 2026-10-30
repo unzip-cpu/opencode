@@ -80,6 +80,9 @@ export const currentRoute = (pathname: string, search: string): LayoutRoute => {
     return { type: "draft", draftID }
   }
 
+  // ghz:尚未知这里有什么好的解决办法？
+  if (parts[0] === "new") return { type: "home" }
+
   if (parts[0] === "server" && parts[2] === "session" && parts[3]) {
     return {
       type: "session",
