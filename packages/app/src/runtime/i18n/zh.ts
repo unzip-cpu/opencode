@@ -112,7 +112,7 @@ export const dict = {
   "command.input.focus": "聚焦输入框",
 
 
-  "command.review.toggle": "打卡侧边栏",
+  "command.review.toggle": "打开侧边栏",
 
   "command.message.previous": "上一条消息",
   "command.message.previous.description": "跳转到上一条用户消息",
