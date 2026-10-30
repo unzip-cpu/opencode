@@ -50,6 +50,8 @@ export function normalizeProviderList(
   const all = new Map<string, Provider>()
 
   for (const provider of providers) {
+    // ghz:过滤掉 opencode 内置模型，让用户自己选择
+    if (provider.id === "opencode") continue
     all.set(provider.id, {
       id: provider.id,
       canonical: provider.canonical,
@@ -63,6 +65,8 @@ export function normalizeProviderList(
   }
 
   for (const model of models ?? []) {
+    // ghz:过滤掉 opencode 内置模型，让用户自己选择
+    if (model.providerID === "opencode") continue
     const provider = all.get(model.providerID)
 
     if (!provider || model.status === "deprecated") continue
@@ -117,9 +121,10 @@ export function normalizeProviderList(
 
   const result = {
     all,
-    connected: providers.map((provider) => provider.id),
+    connected: providers.filter((provider) => provider.id !== "opencode").map((provider) => provider.id),
     default: Object.fromEntries(
       providers.flatMap((provider) => {
+        if (provider.id === "opencode") return []
         const model = models?.find((item) => item.providerID === provider.id && item.status !== "deprecated")
 
         return model ? [[provider.id, model.id]] : []
