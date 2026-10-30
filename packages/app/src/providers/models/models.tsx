@@ -84,6 +84,17 @@ const createModelsController = (directory: Accessor<string | undefined>) => {
 
   const latestSet = createMemo(() => new Set(latest().map((x) => modelKey(x))))
 
+  // OpenCode's free models (Big Pickle) stay on offer long after release, so they are listed regardless of age or a
+  // newer free model in the same family.
+  const freeSet = createMemo(
+    () =>
+      new Set(
+        available()
+          .filter(isFreeModel)
+          .map((x) => modelKey({ providerID: x.provider.id, modelID: x.id })),
+      ),
+  )
+
   const visibility = createMemo(() => {
     const map = new Map<string, Visibility>()
 
@@ -115,8 +126,17 @@ const createModelsController = (directory: Accessor<string | undefined>) => {
   }
 
   const visible = (model: ModelKey) => {
-    // ghz:隐藏opencode提供的免费模型，而其他的模型全部设置为可见
-    return model.providerID === "opencode" ? false : true
+    const key = modelKey(model)
+    const state = visibility().get(key)
+
+    if (state === "hide") return false
+
+    if (state === "show") return true
+
+    if (latestSet().has(key)) return true
+
+    // Models without a parseable release date stay visible.
+    return !Number.isFinite(release().get(key) ?? NaN)
   }
 
   const setVisibility = (model: ModelKey, state: boolean) => {
