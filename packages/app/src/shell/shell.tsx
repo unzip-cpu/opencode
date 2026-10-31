@@ -1,4 +1,4 @@
-import { Show, startTransition, Suspense, type ParentProps } from "solid-js"
+import { createEffect, Show, startTransition, Suspense, type ParentProps } from "solid-js"
 import { createStore } from "solid-js/store"
 import { createMediaQuery } from "@solid-primitives/media"
 import { ResizeHandle } from "@opencode/ui/resize-handle"
@@ -17,6 +17,7 @@ import { useLanguage } from "@/runtime/i18n/language"
 import { useGlobal } from "@/runtime/server/runtime"
 import { useServers } from "@/runtime/server/registry"
 import { useTabs } from "@/shell/tabs/tabs"
+import { useLayout } from "@/shell/state/layout"
 import {
   CollapsedSidebarToggle,
   collapsedSidebarToggleEnd,
@@ -45,7 +46,16 @@ export default function Layout(props: ParentProps) {
   const global = useGlobal()
   const servers = useServers()
   const tabs = useTabs()
+  const layout = useLayout()
   const mobile = createMediaQuery("(max-width: 767px)")
+
+  //ghz:Titlebar 被隐藏后，深链进入的会话不会注册成 tab，右侧“打开侧边栏”按钮会空操作。
+  createEffect(() => {
+    const route = layout.route()
+
+    if (!tabs.ready() || route.type !== "session") return
+    tabs.addSessionTab({ server: route.server, sessionId: route.sessionId })
+  })
 
   const [state, setState] = createStore<{
     tabsWidth: number
