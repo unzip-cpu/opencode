@@ -122,7 +122,7 @@ export const dict = {
   "ui.promptInput.uploading": "{{percent}}%",
   "ui.promptInput.label": "提示词",
   "ui.promptInput.placeholder.shell": "输入 shell 命令…",
-  "ui.promptInput.placeholder.normal": "随便问点什么， {{slash}} 可查看命令， {{at}} 可添加上下文…",
+  "ui.promptInput.placeholder.normal": "随便问点什么， {{at}} 可添加技能…",
   "ui.promptInput.add": "添加图片和文件",
   "ui.promptInput.attachments": "图片和文件",
   "ui.promptInput.context": "上下文",
