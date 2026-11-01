@@ -207,7 +207,12 @@ export function createComposerModel(adapter: ComposerAdapter, options?: { queue?
       })),
   )
 
-  const skills = createMemo(() => data.location.skill.list({ directory: sdk().directory }) ?? [])
+  //ghz:@菜单不显示内置skills
+  const skills = createMemo(() =>
+    (data.location.skill.list({ directory: sdk().directory }) ?? []).filter(
+      (skill) => !skill.path.startsWith("/builtin/"),
+    ),
+  )
 
   let sessionSearch: string | undefined
   const [sessionSearched, setSessionSearched] = createSignal<string>()

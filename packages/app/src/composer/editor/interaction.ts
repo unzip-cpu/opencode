@@ -199,23 +199,15 @@ export function createComposerEditor(input: {
   }
 
   const contextList = useFilteredList<ComposerSuggestion>({
-    items: (query) => {
+    items: () => {
       if (state.popover.type !== "context") {
         findFiles(undefined)
 
         return []
       }
 
-      findFiles(query)
-
-      const sessions = input.searchSessions?.(query) ?? []
-
-      // Only session titles contain spaces; fuzzy matches elsewhere would keep the popover over prose.
-      if (/\s/.test(query)) return sessions
-
-      //ghz:@唤起命令只保留skills
-      const skills = input.context().filter((item) => item.kind === "skill" && item.id !== "skill:opencode")
-      return skills
+      //ghz:@只保留skills
+      return input.context().filter((item) => item.kind === "skill")
     },
     key: (item) => item.id,
     filterKeys: ["label"],

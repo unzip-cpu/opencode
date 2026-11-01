@@ -391,17 +391,16 @@ export function ComposerEditor(props: ComposerEditorProps) {
             inert={state.mode === "shell" ? true : undefined}
             style={buttons()}
           >
+            {/*ghz:去掉“命令 /”入口，@ 文案改为“技能”*/}
             <ComposerEditorAddMenu
               disabled={view.draftOnly || state.mode === "shell"}
               title={i18n.t("ui.promptInput.add")}
               keybind={props.attachKeybind ?? ["Mod", "U"]}
               attachLabel={i18n.t("ui.promptInput.attachments")}
               attachShortcut={props.attachShortcut ?? "Mod+U"}
-              commandsLabel={i18n.t("ui.promptInput.commands")}
-              contextLabel={i18n.t("ui.promptInput.context")}
+              contextLabel={i18n.t("ui.tool.skill")}
               shellLabel={i18n.t("ui.promptInput.shell")}
               onAttach={props.controller.attach}
-              onCommands={props.controller.openCommands}
               onContext={props.controller.openContext}
               onShell={props.controller.openShell}
             />
@@ -902,17 +901,16 @@ function ComposerAttachments(props: {
   )
 }
 
+//ghz:“命令 /”入口及其 commandsLabel/onCommands 已移除
 function ComposerEditorAddMenu(props: {
   disabled?: boolean
   title: string
   keybind?: string[]
   attachLabel: string
   attachShortcut?: string
-  commandsLabel: string
   contextLabel: string
   shellLabel: string
   onAttach: () => void
-  onCommands: () => void
   onContext: () => void
   onShell: () => void
 }) {
@@ -950,9 +948,7 @@ function ComposerEditorAddMenu(props: {
               {props.attachLabel}
             </Menu.Item>
             <Menu.Separator />
-            <Menu.Item onSelect={props.onCommands} shortcut="/">
-              {props.commandsLabel}
-            </Menu.Item>
+            {/*ghz:已移除“命令 /”入口*/}
             <Menu.Item onSelect={props.onContext} shortcut="@">
               {props.contextLabel}
             </Menu.Item>
