@@ -114,9 +114,6 @@ export function ConnectServerScreen(props: { url?: string } = {}) {
   return (
     <main data-component="connect-server" aria-labelledby="server-connect-title">
       <div class="server-connect-content">
-        <div class="server-connect-brand" role="img" aria-label="OpenCode">
-          <Wordmark />
-        </div>
         <header>
           <h1 id="server-connect-title">{language.t("server.connect.title")}</h1>
           <p>
@@ -204,9 +201,6 @@ export function ConnectServerScreen(props: { url?: string } = {}) {
                   aria-describedby="server-connect-password-hint"
                   onInput={(event) => setState({ password: event.currentTarget.value, error: "" })}
                 />
-                <p id="server-connect-password-hint" class="server-connect-hint">
-                  {language.t("server.connect.password.hint")}
-                </p>
               </div>
             </Show>
             <Show when={state.error}>
@@ -223,32 +217,11 @@ export function ConnectServerScreen(props: { url?: string } = {}) {
               {language.t(request.isPending ? "dialog.server.add.checking" : "server.connect.button")}
             </Button>
           </form>
-          <Show when={state.method === "link" && platform.platform === "web"}>
-            <Show
-              when={camera.available.latest || camera.available.loading}
-              fallback={<p>{language.t(cameraHint())}</p>}
-            >
-              <Button
-                variant="neutral"
-                size="large"
-                disabled={request.isPending || !camera.available.latest}
-                onClick={() => setState("scanning", true)}
-              >
-                {language.t("server.connect.scan")}
-              </Button>
-            </Show>
-          </Show>
           <ConnectMethodSwitch
             method={state.method}
             disabled={request.isPending}
             onChange={(method) => setState({ method, error: "" })}
           />
-          <Show when={state.method === "link"}>
-            <footer>
-              <p>{language.t("server.connect.pair.link")}</p>
-              <code dir="ltr">opencode pair</code>
-            </footer>
-          </Show>
         </Show>
       </div>
     </main>
