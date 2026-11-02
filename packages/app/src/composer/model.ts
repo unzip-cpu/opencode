@@ -210,7 +210,7 @@ export function createComposerModel(adapter: ComposerAdapter, options?: { queue?
   //ghz:@菜单不显示内置skills
   const skills = createMemo(() =>
     (data.location.skill.list({ directory: sdk().directory }) ?? []).filter(
-      (skill) => !skill.path.startsWith("/builtin/"),
+      (skill) => !skill.path.startsWith("skill://"),
     ),
   )
 
