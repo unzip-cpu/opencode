@@ -332,7 +332,11 @@ export function PaneTabs(props: {
               </Tabs.Trigger>
             )}
           </For>
-          <div class="h-full shrink-0 sticky end-0 z-10 flex items-center justify-center bg-v2-background-bg-base">
+          {/* ghz: 侧边区域不再显示"添加标签页"按钮（底部终端区保留） */}
+          <div
+            class="h-full shrink-0 sticky end-0 z-10 flex items-center justify-center bg-v2-background-bg-base"
+            classList={{ hidden: props.pane.id !== "bottom" }}
+          >
             <Show
               when={primary() ?? (launchers().length === 0 && menu().length === 1 ? menu()[0]?.item : undefined)}
               fallback={

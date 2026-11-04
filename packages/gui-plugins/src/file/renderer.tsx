@@ -32,7 +32,6 @@ import {
   type Plugin,
 } from "@opencode/plugin/gui"
 import { artifactKind } from "@opencode/util/artifact"
-import { uuid } from "@opencode/util/uuid"
 import { resolveArtifactPath } from "./artifact"
 import { FileContext, type FileShared } from "./context"
 import type { OpenApp } from "./apps"
@@ -52,8 +51,6 @@ import { Browser } from "@opencode/plugin/gui/browser"
 import { Changes } from "@opencode/plugin/gui/review"
 
 const OPEN = "open"
-
-const isLauncher = (id: string) => id === OPEN || id.startsWith(`${OPEN}:`)
 
 const GROUP = "browser"
 
@@ -156,19 +153,11 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
     shared.reveal.run(session.key, path)
   }
 
-  // Reuses the selected launcher; otherwise wide screens add another one beside the open tabs, so several can stay
-  // open. Narrow screens never store a launcher, so they keep the one.
+  // ghz: 打开文件 tab 固定为 pinned 常驻侧边栏（上游为 transient + uuid 动态 id），始终复用这一个
   const openPicker = (session: MountedSession, query: string, options?: OpenOptions & { another?: boolean }) => {
-    const selected = options?.another
-      ? undefined
-      : layout.stored(session).find((id) => isLauncher(id) && active(session, id))
-
     batch(() => {
       updateFilter(session.key, { text: query, browsing: true })
-
-      if (selected || layout.narrow())
-        layout.open(`file:${selected ?? OPEN}`, session, { tab: "preview", background: options?.background })
-      else layout.open(`file:${OPEN}:${uuid()}`, session, { tab: "select" })
+      layout.open(`file:${OPEN}`, session, { tab: "select", background: options?.background })
 
       if (!options?.background && layout.narrow() && !layout.side.opened(session)) layout.side.toggle(session)
     })
@@ -269,6 +258,7 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
     }),
   )
 
+  // ghz: 打开文件固定为 pinned tab 常驻侧边栏、不可关闭（上游为 transient，宽屏会新建多个 launcher）
   const launcher = (id: string): BuiltinPanelTab => ({
     id,
     get title() {
@@ -280,8 +270,8 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
         <span>{ctx.t("command.open")}</span>
       </div>
     ),
+    pinned: true,
     draggable: false,
-    transient: true,
     group: GROUP,
     dom: { panel: TABPANEL },
   })
@@ -330,20 +320,24 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
       icon: "folder",
     },
     list(input) {
-      return input.open.flatMap((id) => {
-        if (!isLauncher(id) && !isFileTab(id)) return []
+      // ghz: 打开文件 tab 固定置顶；存储中的旧 launcher 键（open:<uuid>）不再重复渲染
+      return [
+        launcher(OPEN),
+        ...input.open.flatMap((id) => {
+          if (!isFileTab(id)) return []
 
-        const cache = tabsOf(input.screen)
-        const existing = cache.get(id)
+          const cache = tabsOf(input.screen)
+          const existing = cache.get(id)
 
-        if (existing) return [existing]
+          if (existing) return [existing]
 
-        const created = isLauncher(id) ? launcher(id) : fileTab(input.screen.file, id)
+          const created = fileTab(input.screen.file, id)
 
-        cache.set(id, created)
+          cache.set(id, created)
 
-        return [created]
-      })
+          return [created]
+        }),
+      ]
     },
     close(input) {
       tabs.get(input.screen)?.delete(input.tab.id)

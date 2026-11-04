@@ -2,7 +2,7 @@ export default {
   "tree.all": "所有文件",
   "tab.notFound": "未找到文件：{{name}}",
   "mobile.title": "文件",
-  "mobile.openTabs": "打开文件",
+  "mobile.openTabs": "工作空间",
   "open.in": "打开方式",
   "open.ariaLabel": "在 {{app}} 中打开",
   "open.menu": "打开选项",
@@ -24,5 +24,5 @@ export default {
   "open.finder": "访达",
   "open.fileExplorer": "文件资源管理器",
   "open.fileManager": "文件管理器",
-  "command.open": "打开文件",
+  "command.open": "工作空间",
 }
