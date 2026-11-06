@@ -1,0 +1,17 @@
+export default {
+  "preview.action.start": "Start",
+  "preview.action.retry": "Retry",
+  "preview.action.stop": "Stop",
+  "preview.action.cancel": "Cancel",
+  "preview.action.reload": "Reload",
+  "preview.action.openExternal": "Open in browser",
+  "preview.frame": "Application preview",
+  "preview.hint.checking": "Checking this workspace for a Vite project",
+  "preview.hint.noProject": "The project has not been generated yet",
+  "preview.hint.noVite": "No Vite project was found in this workspace",
+  "preview.hint.install": "The first run installs dependencies",
+  "preview.hint.starting": "Waiting for the dev server to answer",
+  "preview.hint.failed": "Check the log below, then retry",
+  "preview.hint.stopped": "Start the preview to open it again",
+  "preview.hint.cancelled": "Installation cancelled by the user",
+}

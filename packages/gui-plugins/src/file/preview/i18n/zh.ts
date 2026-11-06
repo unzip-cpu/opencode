@@ -1,0 +1,17 @@
+export default {
+  "preview.action.start": "启动",
+  "preview.action.retry": "重试",
+  "preview.action.stop": "停止",
+  "preview.action.cancel": "取消",
+  "preview.action.reload": "刷新",
+  "preview.action.openExternal": "在浏览器中打开",
+  "preview.frame": "应用预览",
+  "preview.hint.checking": "正在检测工作空间里的 Vite 项目",
+  "preview.hint.noProject": "项目尚未生成完成",
+  "preview.hint.noVite": "工作空间里没有检测到 Vite 项目",
+  "preview.hint.install": "首次运行需要安装依赖",
+  "preview.hint.starting": "正在等待开发服务器就绪",
+  "preview.hint.failed": "请查看下方日志后重试",
+  "preview.hint.stopped": "点击启动可以重新打开预览",
+  "preview.hint.cancelled": "用户取消安装",
+}

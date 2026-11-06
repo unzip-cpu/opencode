@@ -49,8 +49,13 @@ import tabStyles from "./tabs.css?inline"
 import { onIdle, BuiltinPanel, BuiltinSlot, type BuiltinPanelTab } from "@opencode/plugin/gui/builtin"
 import { Browser } from "@opencode/plugin/gui/browser"
 import { Changes } from "@opencode/plugin/gui/review"
+import { createPreviewModel } from "./preview/model"
 
 const OPEN = "open"
+
+// ghz: 预览面板与它的 tab id；tab 固定置顶，紧跟“工作空间”之后
+const PREVIEW = "preview"
+const PREVIEW_TABPANEL = "session-side-panel-preview-tabpanel"
 
 const GROUP = "browser"
 
@@ -246,6 +251,12 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
   const Tree = lazy(() => styled(import("./pierre-tree")))
   const List = lazy(() => styled(import("./list")))
 
+  // ghz: 预览的状态机随 setup 创建（dev server 跨 tab、跨 session 存活），UI 则懒加载
+  const PreviewPanel = lazy(() =>
+    import("./preview/panel").then((module) => ({ default: module.PreviewPanel })),
+  )
+  const preview = createPreviewModel({ signal: ctx.signal })
+
   onCleanup(
     onIdle(() => {
       void import("./pierre-tree")
@@ -253,6 +264,7 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
       void Tree.preload()
       void List.preload()
       void import("./resolve-link")
+      void PreviewPanel.preload()
 
       if (layout.narrow()) void MobileFiles.preload()
     }),
@@ -366,6 +378,43 @@ const setup: Plugin.Setup<typeof File> = (ctx) => {
       focused.set(input.screen, input.tab.id)
       void input.screen.file.sync(fileTabPath(input.screen.file, input.tab.id), { silent: true })
     },
+  })
+
+  // ghz: 预览 tab。固定置顶、不可关闭、不进入文件的 group，因此始终排在工作空间之后独立渲染
+  const previewTab: BuiltinPanelTab = {
+    id: PREVIEW,
+    get title() {
+      return ctx.t("preview.title")
+    },
+    label: () => (
+      <div class="flex items-center gap-1.5">
+        <Icon name="globe" size="small" />
+        <span>{ctx.t("preview.title")}</span>
+      </div>
+    ),
+    pinned: true,
+    draggable: false,
+    dom: { panel: PREVIEW_TABPANEL },
+  }
+
+  ctx.add(BuiltinPanel, {
+    id: PREVIEW,
+    region: "side",
+    mobile: {
+      get title() {
+        return ctx.t("preview.title")
+      },
+      order: 21,
+      kind: "menu",
+      icon: "globe",
+      cached: true,
+    },
+    list: () => [previewTab],
+    render: (props) => (
+      <Suspense>
+        <PreviewPanel session={props.session} model={preview} />
+      </Suspense>
+    ),
   })
 
   const browse = () => {

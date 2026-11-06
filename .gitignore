@@ -18,6 +18,7 @@ ts-dist
 .typecheck-profiles
 **/.serena
 .serena/
+.workbuddy
 **/.omo
 .omo/
 /result
