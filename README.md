@@ -6,10 +6,13 @@ cd /usr/local/app/abi/opencode/src
 export OPENCODE_VERSION=2.2.5
 bun install
 bun run packages/cli/script/build.ts
+先停掉opencode service stop
+/usr/local/app/abi/opencode/src/packages/cli/dist/cli-linux-arm64/bin/目录下的opencode文件复制到/usr/local/bin/目录下
+启动opencode service start
 ```
 
 ## 13.12部署
-- opencode service set hostname 0.0.0.0
+- opencode service set hostname 0.0.0.0（仅设置一次）
 - opencode service set port 49374（仅设置一次）
 - opencode service set password "Hduap@001"（仅设置一次）
 - 
