@@ -22,6 +22,7 @@ bun run packages/cli/script/build.ts
 ```jupyter
 在opencode根目录启动后端：bun dev serve（启动成功后控制台会输出本次登录需要用要的临时密码，用于后面的登录环节）
 在opencode/packages/app启动前端：bun dev
+修改：packages/app/src/shell/routes/routes.tsx，将/路由的注释解开
 前端访问 http://loaclhost:3000（点击 user password 后 输入密码）
 运行数据存储在C:\Users\gehongzhi\.local\share\opencode
 ```
